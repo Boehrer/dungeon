@@ -53,7 +53,7 @@ class Creature:
 
     def get_damage(self, damage_type: str) -> int:
         damage = self.stats[STATS_BY_DAMAGE_TYPE[damage_type]]
-        if self.weapon.damage_type == damage_type and self.weapon is not None:
+        if self.weapon is not None and self.weapon.damage_type == damage_type:
             damage += self.weapon.damage
         return damage
 
