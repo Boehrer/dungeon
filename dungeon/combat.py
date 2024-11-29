@@ -2,12 +2,12 @@ import argparse
 import logging
 import sys
 
-from actions import ACTIONS, get_action
-from game_state import GameState
-from party import PARTY
-from creature import Creature
-from species import get_species
-from roll import roll
+from dungeon.actions import ACTIONS, get_action
+from dungeon.game_state import GameState
+from dungeon.party import PARTY
+from dungeon.creature import Creature
+from dungeon.species import get_species
+from dungeon.roll import roll
 
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)

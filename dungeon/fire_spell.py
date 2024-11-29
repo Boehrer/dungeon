@@ -1,7 +1,6 @@
-from spell import Spell
-
-from creature import Creature
-from weapons import MAGIC
+from dungeon.creature import Creature
+from dungeon.spell import Spell
+from dungeon.weapons import MAGIC
 
 
 class FireSpell(Spell):

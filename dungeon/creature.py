@@ -1,9 +1,9 @@
-from buff import Buff
-from spell import Spell
-from species import Species
-from stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
-from weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
-from weapon import Weapon
+from dungeon.buff import Buff
+from dungeon.spell import Spell
+from dungeon.species import Species
+from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
+from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
+from dungeon.weapon import Weapon
 
 import logging
 

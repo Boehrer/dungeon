@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+packages = ["dungeon"]
+
+
+[project]
+name = "dungeon"
+version = "0.0.0"
+description = "A CLI for automating DnD like actions"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+keywords = ["dungeon", "DnD"]
+authors = [
+  { name = "Jack Boehrer", email = "jack.boehrer@gmail.com" },
+]
+maintainers = [
+  { name = "Jack Boehrer", email = "jack.boehrer@gmail.com" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3.13",
+]
+
+
+[project.urls]
+"Homepage" = "https://github.com/boehrer/dungeon"

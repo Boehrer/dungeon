@@ -1,4 +1,4 @@
-from fire_spell import FireSpell
+from dungeon.fire_spell import FireSpell
 
 
 fire_bolt = FireSpell(

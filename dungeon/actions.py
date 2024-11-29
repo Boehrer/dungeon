@@ -2,9 +2,9 @@ import argparse
 import logging
 import sys
 
-from creature import Creature
-from weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
-from roll import roll
+from dungeon.creature import Creature
+from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
+from dungeon.roll import roll
 
 logger = logging.getLogger(__name__)
 

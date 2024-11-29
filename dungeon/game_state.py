@@ -6,7 +6,7 @@ import os
 import json
 from typing import Any
 
-from creature import Creature
+from dungeon.creature import Creature
 
 
 DEFAULT_PATH = "game_state.json"

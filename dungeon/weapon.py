@@ -1,4 +1,4 @@
-from weapons import WEAPONS, MELEE, RANGED, MAGIC
+from dungeon.weapons import WEAPONS, MELEE, RANGED, MAGIC
 
 
 class Weapon:
