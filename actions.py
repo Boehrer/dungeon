@@ -7,16 +7,17 @@ from weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
 from roll import roll
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
 
 class Action:
-    def __init__(self, actor: Creature, subject: Creature):
+    def __init__(self, actor: Creature, subject: Creature, details: list[str]):
         self.actor = actor
         self.subject = subject
+        self.details = details
+        self.validate()
 
     def get_difficulty(self):
-        return 10
+        return 1
 
     def skill_check_and_resolve(self):
         skill_check = roll()
@@ -34,18 +35,55 @@ class Action:
     def from_parsed_args(cls, args: argparse.Namespace, participants: dict[str, Creature]):
         actor = participants[args.actor]
         subject = participants[args.subject]
-        return cls(actor=actor, subject=subject)
+        return cls(actor=actor, subject=subject, details=args.details)
+
+    def validate(self):
+        if not self.actor.is_alive():
+            raise ValueError("The dead can't perform an action")
 
 
-class MeleeAttack(Action):
+class Attack(Action):
+    damage_type = MELEE
+
     def resolve(self):
-        damage = self.actor.get_damage(damage_type=MELEE)
-        self.subject.apply_damage(damage)
-        logger.info(f"{self.actor.name} attacked {self.subject.name} for {damage} HP")
+        damage = self.actor.get_damage(damage_type=self.damage_type)
+        self.subject.apply_damage(damage, damage_type=self.damage_type)
+        logger.info(
+            f"{self.actor.name} attacked {self.subject.name} with {damage} "
+            f"{self.damage_type} damage"
+        )
+
+
+class RangedAttack(Attack):
+    damage_type = RANGED
+
+
+class CastSpell(Action):
+    def resolve(self):
+        spell_name = self.details[0]
+        spell = self.actor.cast(spell_name)
+        spell.apply(self.subject)
+        logger.info(
+            f"{self.actor.name} cast {spell_name} on {self.subject.name}"
+        )
+
+
+    def validate(self):
+        super().validate()
+        spell_name = self.details[0]
+        spell = self.actor.get_spell(spell_name)
+        if spell is None:
+            raise ValueError(f"Actor does not have the spell {spell_name}")
+        if self.actor.mana < spell.cost:
+            raise ValueError(
+                "Spell requires {spell.cost} mana, but actor only has {self.actor.mana}"
+            )
 
 
 ACTIONS = {
-    "melee_attack": MeleeAttack
+    "melee_attack": Attack,
+    "ranged_attack": RangedAttack,
+    "cast_spell": CastSpell,
 }
 
 
