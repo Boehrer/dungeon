@@ -28,7 +28,12 @@ PARSER.add_argument("details", nargs="*")
 
 def process_action(action: str):
     action = get_action(PARSER.parse_args(action.split()), PARTICIPANTS)
-    action.skill_check_and_resolve()
+    skill_check = roll()
+    if skill_check >= self.get_difficulty():
+        logger.info("passed skill check")
+        action.resolve()
+    else:
+        logger.info("failed skill check")
 
 
 if __name__ == "__main__":

@@ -4,7 +4,6 @@ import sys
 
 from dungeon.creature import Creature
 from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
-from dungeon.roll import roll
 
 logger = logging.getLogger(__name__)
 
@@ -19,17 +18,12 @@ class Action:
     def get_difficulty(self):
         return 1
 
-    def skill_check_and_resolve(self):
-        skill_check = roll()
-        logger.info(f"rolled {skill_check}")
-        if skill_check >= self.get_difficulty():
-            logger.info("passed skill check")
-            self.resolve()
-        else:
-            logger.info("failed skill check")
-
     def resolve(self):
         raise NotImplementedError
+
+    def validate(self):
+        if not self.actor.is_alive():
+            raise ValueError("The dead can't perform an action")
 
     @classmethod
     def from_parsed_args(cls, args: argparse.Namespace, participants: dict[str, Creature]):
@@ -37,12 +31,9 @@ class Action:
         subject = participants[args.subject]
         return cls(actor=actor, subject=subject, details=args.details)
 
-    def validate(self):
-        if not self.actor.is_alive():
-            raise ValueError("The dead can't perform an action")
 
 
-class Attack(Action):
+class MeleeAttack(Action):
     damage_type = MELEE
 
     def resolve(self):
@@ -54,7 +45,7 @@ class Attack(Action):
         )
 
 
-class RangedAttack(Attack):
+class RangedAttack(MeleeAttack):
     damage_type = RANGED
 
 
@@ -81,7 +72,7 @@ class CastSpell(Action):
 
 
 ACTIONS = {
-    "melee_attack": Attack,
+    "melee_attack": MeleeAttack,
     "ranged_attack": RangedAttack,
     "cast_spell": CastSpell,
 }
