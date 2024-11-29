@@ -1,19 +1,9 @@
 import pytest
 
-from dungeon.creature import Creature
-from dungeon.species import get_species
 from dungeon.spells import fire_bolt
 from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
 from dungeon.weapon import Weapon
 from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
-
-
-@pytest.fixture
-def creature():
-    return Creature(
-        name="human",
-        species=get_species("human"),
-    )
 
 
 def test_get_damage(creature):
