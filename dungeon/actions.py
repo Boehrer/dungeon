@@ -52,6 +52,13 @@ class MeleeAttack(Action):
 class RangedAttack(MeleeAttack):
     damage_type = RANGED
 
+    def validate(self):
+        super().validate()
+        if self.actor.weapon is None or self.actor.weapon.damage_type != RANGED:
+            raise ValueError(
+                f"{self.actor.name} attempted a ranged attack without a ranged weapon"
+            )
+
 
 class CastSpell(Action):
     def resolve(self):

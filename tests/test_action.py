@@ -5,6 +5,7 @@ from dungeon.actions import Action, MeleeAttack, RangedAttack, CastSpell
 from dungeon.creature import Creature
 from dungeon.species import human
 from dungeon.spells.spells import fire_bolt
+from dungeon.weapon import Weapon
 from dungeon.weapons import MELEE, RANGED, MAGIC
 
 
@@ -47,9 +48,13 @@ def test_melee_attack(creature, other_creature):
 
 def test_ranged_attack(creature, other_creature):
     """
-    resolving a ranged attack should reduce subjects health by an expected
-    amount
+    A value error should be raised if RangedAttack is instantiating with an
+    actor without a ranged weapon resolving a ranged attack should reduce
+    subjects health by an expected amount
     """
+    with pytest.raises(ValueError):
+        action = RangedAttack(creature, other_creature, [])
+    creature.weapon = Weapon("", 0, RANGED)
     action = RangedAttack(creature, other_creature, [])
     initial_health = other_creature.health
     action.resolve()
