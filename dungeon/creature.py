@@ -1,4 +1,3 @@
-from dungeon.buff import Buff
 from dungeon.effect import Effect
 from dungeon.spells.spell import Spell
 from dungeon.species import Species
@@ -27,21 +26,21 @@ class Creature:
         name: str,
         species: Species,
         weapon: Weapon | None = None,
-        buffs: list[Buff] | None = None,
+        buffs: dict[str, int] | None = None,
         spells: list[Spell] | None = None,
         effects: list[Effect] | None = None,
         health: int | None = None,
         mana: int | None = None,
     ):
         if buffs is None:
-            buffs = []
+            buffs = {}
         if spells is None:
             spells = []
         if effects is None:
             effects = []
         self.stats = species.base_stats.copy()
-        for buff in buffs:
-            self.stats[buff.stat] += 1
+        for stat, buff in buffs.items():
+            self.stats[stat] += buff
         self.name = name
         self.weapon = weapon
         self.buffs = buffs

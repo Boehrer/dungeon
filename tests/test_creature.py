@@ -2,11 +2,26 @@ import copy
 import pytest
 from unittest.mock import Mock
 
+from dungeon.creature import Creature
 from dungeon.effect import Effect
+from dungeon.species import get_species
 from dungeon.spells.spells import fire_bolt
 from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
 from dungeon.weapon import Weapon
 from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
+
+
+def test_stats():
+    species = get_species("human")
+    buffs = {STRENGTH: 1, DEXTERITY: 2, MAGIC_STAT: 3}
+    creature = Creature(
+        name="test_creature",
+        species=species,
+        buffs=buffs,
+    )
+    for stat in [STRENGTH, DEXTERITY, MAGIC_STAT]:
+        assert creature.stats[stat] == species.base_stats[stat] + buffs[stat]
+
 
 
 def test_get_damage(creature):
