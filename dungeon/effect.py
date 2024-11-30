@@ -85,3 +85,17 @@ class Shield(Effect):
 class MagicShield(Shield):
     def can_block(self, damage: Effect) -> bool:
         return isinstance(damage, MagicDamage)
+
+
+@register_class
+class Heal(Effect):
+    persist = False
+
+    def apply(self, subject: "Creature"):
+        healing = min(subject.max_health - subject.health, self.amplitude)
+        subject.health += healing
+        logger.info(f"{subject.name} healed for {healing} HP ({subject.health}/{subject.max_health})")
+
+    def validate(self):
+        if self.amplitude <= 0:
+            raise ValueError("heal amplitude must be positive")

@@ -1,4 +1,6 @@
-from dungeon.effect import Effect, Damage, MagicDamage, MagicShield, Shield
+import pytest
+
+from dungeon.effect import Effect, Damage, Heal, MagicDamage, MagicShield, Shield
 
 
 def test_damage(creature):
@@ -61,6 +63,23 @@ def test_magic_shield(creature):
         creature.health
         == creature.max_health - damage_amplitude + shield_amplitude
     )
+
+
+def test_heal(creature):
+    """
+    * heals should raise an error if their amplitude is negative,
+    * heals should increase health
+    * heals should not increase health above max health,
+    """
+    with pytest.raises(ValueError):
+        Heal(amplitude=-1)
+    creature.health = 1
+    heal = Heal(amplitude=1)
+    creature.add_effect(heal)
+    assert creature.health == 2
+    creature.max_health = 2
+    creature.add_effect(heal)
+    assert creature.health == 2
 
 
 def test_to_json_and_from_json():
