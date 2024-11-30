@@ -43,11 +43,10 @@ class MeleeAttack(Action):
             amplitude=amplitude,
             duration=0,
         )
-        self.subject.add_effect(damage_effect)
         logger.info(
-            f"{self.actor.name} attacked {self.subject.name} with {amplitude} "
-            f"{self.damage_type} damage"
+            f"{self.actor.name} attacked {self.subject.name} with {self.damage_type}"
         )
+        self.subject.add_effect(damage_effect)
 
 
 class RangedAttack(MeleeAttack):
@@ -58,10 +57,10 @@ class CastSpell(Action):
     def resolve(self):
         spell_name = self.details[0]
         spell = self.actor.cast(spell_name)
-        spell.apply(self.subject)
         logger.info(
             f"{self.actor.name} cast {spell_name} on {self.subject.name}"
         )
+        spell.apply(self.subject)
 
 
     def validate(self):
