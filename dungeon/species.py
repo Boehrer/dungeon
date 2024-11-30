@@ -10,7 +10,7 @@ human = Species(
 )
 dwarf = Species(
     name="dwarf",
-    base_stats={"strength": 2, "dexterity": 2, "magic": 0, "charisma": 0},
+    base_stats={"strength": 2, "dexterity": 0, "magic": 0, "charisma": 2},
 )
 elf = Species(
     name="elf",
@@ -19,4 +19,8 @@ elf = Species(
 halfling = Species(
     name="halfling",
     base_stats={"strength": 0, "dexterity": 2, "magic": 0, "charisma": 2},
+)
+goblin = Species(
+    name="halfling",
+    base_stats={"strength": 0, "dexterity": 1, "magic": 1, "charisma": 1},
 )

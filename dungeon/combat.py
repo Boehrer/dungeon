@@ -6,9 +6,9 @@ from dungeon.actions import ACTIONS, get_action
 from dungeon.creature import Creature
 from dungeon.game_state import GameState
 from dungeon.roll import roll
-from dungeon.species import human
-from dungeon.spells.spells import fire_bolt, shield
-from dungeon.stats import STRENGTH
+from dungeon.species import human, halfling, elf, goblin
+from dungeon.spells.spells import fire_bolt, fire_blast, shield
+from dungeon.stats import STRENGTH, DEXTERITY, MAGIC
 from dungeon.weapon import get_weapon
 
 
@@ -21,15 +21,31 @@ PARTICIPANTS = {
         species=human,
         weapon=get_weapon("common_sword"),
         buffs={STRENGTH: 1},
+        spells=[],
+    ),
+    "sam": Creature(
+        name="sam",
+        species=halfling,
+        weapon=get_weapon("common_bow"),
+        buffs={DEXTERITY: 1},
+        spells=[],
+    ),
+    "ren": Creature(
+        name="ren",
+        species=elf,
+        weapon=get_weapon("common_staff"),
+        buffs={MAGIC: 1},
         spells=[fire_bolt, shield],
     ),
-    "human_1": Creature(
-        name="human_1",
-        species=human,
+    "gog": Creature(
+        name="gog",
+        weapon=get_weapon("common_sword"),
+        species=goblin,
     ),
-    "human_2": Creature(
-        name="human_2",
-        species=human,
+    "rog": Creature(
+        name="rog",
+        weapon=get_weapon("common_sword"),
+        species=goblin,
     ),
 }
 PARSER = argparse.ArgumentParser()
@@ -53,10 +69,11 @@ if __name__ == "__main__":
     game_state = GameState()
     game_state.update(PARTICIPANTS)
     actions = [
-        "chad melee_attack human_1",
-        "chad cast_spell chad shield",
-        "human_2 melee_attack chad",
-        "human_2 melee_attack chad",
+        "chad melee_attack gog",
+        "ren cast_spell chad shield",
+        "sam ranged_attack gog",
+        "gog melee_attack chad",
+        "rog melee_attack chad"
     ]
     for action in actions:
         process_action(action)
