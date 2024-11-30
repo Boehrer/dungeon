@@ -9,7 +9,7 @@ from dungeon.creature import Creature
 from dungeon.species import get_species
 from dungeon.roll import roll
 
-
+logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
 NPCS = [
@@ -29,7 +29,7 @@ PARSER.add_argument("details", nargs="*")
 def process_action(action: str):
     action = get_action(PARSER.parse_args(action.split()), PARTICIPANTS)
     skill_check = roll()
-    if skill_check >= self.get_difficulty():
+    if skill_check >= action.get_difficulty():
         logger.info("passed skill check")
         action.resolve()
     else:
