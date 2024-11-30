@@ -54,7 +54,6 @@ class Creature:
             mana = self.max_mana
         self.health = health
         self.mana = mana
-        
 
     def get_damage(self, damage_type: str) -> int:
         damage = self.stats[STATS_BY_DAMAGE_TYPE[damage_type]]

@@ -2,6 +2,7 @@
 This module proves an interface for reading and writing json files
 which track the state of the game.
 """
+
 import os
 import json
 
@@ -12,7 +13,7 @@ from dungeon.effect import Effect
 DEFAULT_PATH = "game_state.json"
 
 
-class GameState():
+class GameState:
     def __init__(self, path: str = DEFAULT_PATH):
         if os.path.exists(path):
             with open(path, "r") as f:
@@ -39,8 +40,9 @@ class GameState():
                     "name": creature.name,
                     "health": creature.health,
                     "mana": creature.mana,
-                    "effects": [e.to_json() for e in creature.effects]
-                } for _, creature in participants.items()
+                    "effects": [e.to_json() for e in creature.effects],
+                }
+                for _, creature in participants.items()
             ]
         }
         with open(self.path, "w") as f:

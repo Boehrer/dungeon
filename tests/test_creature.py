@@ -22,7 +22,6 @@ def test_stats():
         assert creature.stats[stat] == human.base_stats[stat] + buffs[stat]
 
 
-
 def test_get_damage(creature):
     """
     melee damage should scale with strength,
@@ -34,13 +33,11 @@ def test_get_damage(creature):
     assert creature.get_damage(MELEE) == creature.stats[STRENGTH]
     assert creature.get_damage(RANGED) == creature.stats[DEXTERITY]
     assert creature.get_damage(MAGIC_DAMAGE_TYPE) == creature.stats[MAGIC_STAT]
-    weapon = Weapon(
-        name="melee_weapon",
-        damage=1,
-        damage_type=MELEE
-    )
+    weapon = Weapon(name="melee_weapon", damage=1, damage_type=MELEE)
     creature.weapon = weapon
-    assert creature.get_damage(MELEE) == creature.stats[STRENGTH] + weapon.damage
+    assert (
+        creature.get_damage(MELEE) == creature.stats[STRENGTH] + weapon.damage
+    )
     assert creature.get_damage(RANGED) == creature.stats[DEXTERITY]
     assert creature.get_damage(MAGIC_DAMAGE_TYPE) == creature.stats[MAGIC_STAT]
 

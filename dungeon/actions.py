@@ -27,11 +27,12 @@ class Action:
             raise ValueError("The dead can't perform an action")
 
     @classmethod
-    def from_parsed_args(cls, args: argparse.Namespace, participants: dict[str, Creature]):
+    def from_parsed_args(
+        cls, args: argparse.Namespace, participants: dict[str, Creature]
+    ):
         actor = participants[args.actor]
         subject = participants[args.subject]
         return cls(actor=actor, subject=subject, details=args.details)
-
 
 
 class MeleeAttack(Action):
@@ -61,7 +62,6 @@ class CastSpell(Action):
         )
         spell.apply(self.subject)
 
-
     def validate(self):
         super().validate()
         spell_name = self.details[0]
@@ -81,6 +81,8 @@ ACTIONS = {
 }
 
 
-def get_action(args: argparse.Namespace, participants: dict[str, Creature]) -> Action:
+def get_action(
+    args: argparse.Namespace, participants: dict[str, Creature]
+) -> Action:
     cls = ACTIONS[args.action]
     return cls.from_parsed_args(args, participants)

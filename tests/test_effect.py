@@ -26,7 +26,10 @@ def test_shield(creature):
     damage_amplitude = 2
     damage = Damage(amplitude=damage_amplitude)
     creature.add_effect(damage)
-    assert creature.health == creature.max_health - damage_amplitude + shield_amplitude
+    assert (
+        creature.health
+        == creature.max_health - damage_amplitude + shield_amplitude
+    )
     assert len(creature.effects) == 0
     initial_health = creature.health
     shield_amplitude = 2
@@ -54,7 +57,10 @@ def test_magic_shield(creature):
     damage = MagicDamage(amplitude=damage_amplitude)
     creature.health = creature.max_health
     creature.add_effect(damage)
-    assert creature.health == creature.max_health - damage_amplitude + shield_amplitude
+    assert (
+        creature.health
+        == creature.max_health - damage_amplitude + shield_amplitude
+    )
 
 
 def test_to_json_and_from_json():

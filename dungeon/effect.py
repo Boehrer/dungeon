@@ -6,6 +6,7 @@ logger = logging.getLogger(__name__)
 
 registry = {}
 
+
 def register_class(cls):
     registry[cls.__name__] = cls
     return cls
@@ -34,12 +35,12 @@ class Effect:
         pass
 
     def to_json(self):
-        return {"amplitude": self.amplitude, "class": self.__class__.__name__} 
+        return {"amplitude": self.amplitude, "class": self.__class__.__name__}
 
     @classmethod
     def from_json(cls, data: dict):
         return registry[data["class"]](amplitude=data["amplitude"])
-        
+
 
 @register_class
 class Damage(Effect):
@@ -53,9 +54,11 @@ class Damage(Effect):
         if self.amplitude <= 0:
             raise ValueError("damage amplitude must be positive")
 
+
 @register_class
 class MagicDamage(Damage):
     pass
+
 
 @register_class
 class Shield(Effect):
@@ -76,6 +79,7 @@ class Shield(Effect):
     def validate(self):
         if self.amplitude <= 0:
             raise ValueError("shield amplitude must be positive")
+
 
 @register_class
 class MagicShield(Shield):

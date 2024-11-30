@@ -14,19 +14,14 @@ def other_creature():
         name="other_creature",
         species=human,
     )
-    
+
 
 def test_get_difficulty(creature, other_creature):
     """
     difficulty should default to 1
     """
-    action = Action(
-        actor=creature,
-        subject=other_creature,
-        details=[]
-    )
+    action = Action(actor=creature, subject=other_creature, details=[])
     assert action.get_difficulty() == 1
-
 
 
 def test_validate(creature, other_creature):
@@ -58,7 +53,9 @@ def test_ranged_attack(creature, other_creature):
     action = RangedAttack(creature, other_creature, [])
     initial_health = other_creature.health
     action.resolve()
-    assert initial_health - creature.get_damage(RANGED) == other_creature.health
+    assert (
+        initial_health - creature.get_damage(RANGED) == other_creature.health
+    )
 
 
 def test_cast_spell(creature, other_creature):

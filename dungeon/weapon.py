@@ -13,5 +13,5 @@ def get_weapon(name: str) -> Weapon:
     return Weapon(
         name=name,
         damage=weapon_dict["damage"],
-        damage_type=weapon_dict["damage_type"]
+        damage_type=weapon_dict["damage_type"],
     )

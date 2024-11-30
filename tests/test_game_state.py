@@ -3,6 +3,7 @@ from dungeon.game_state import GameState
 from dungeon.species import human
 from dungeon.effect import Shield
 
+
 def test_write_and_update(tmp_path):
     tmp_file = tmp_path / "test"
     game_state = GameState(path=tmp_file)

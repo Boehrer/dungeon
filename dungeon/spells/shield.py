@@ -1,6 +1,9 @@
 from dungeon.creature import Creature
 from dungeon.spells.spell import Spell
-from dungeon.effect import MagicShield as MagicShieldEffect, Shield as ShieldEffect
+from dungeon.effect import (
+    MagicShield as MagicShieldEffect,
+    Shield as ShieldEffect,
+)
 
 
 class Shield(Spell):

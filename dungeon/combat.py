@@ -21,10 +21,7 @@ PARTICIPANTS = {
         species=human,
         weapon=get_weapon("common_sword"),
         buffs={STRENGTH: 1},
-        spells=[
-            fire_bolt,
-            shield
-        ]
+        spells=[fire_bolt, shield],
     ),
     "human_1": Creature(
         name="human_1",
@@ -33,7 +30,7 @@ PARTICIPANTS = {
     "human_2": Creature(
         name="human_2",
         species=human,
-    )
+    ),
 }
 PARSER = argparse.ArgumentParser()
 PARSER.add_argument("actor", choices=PARTICIPANTS.keys())
