@@ -1,5 +1,8 @@
+import copy
 import pytest
+from unittest.mock import Mock
 
+from dungeon.effect import Effect
 from dungeon.spells import fire_bolt
 from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
 from dungeon.weapon import Weapon
@@ -28,14 +31,29 @@ def test_get_damage(creature):
     assert creature.get_damage(MAGIC_DAMAGE_TYPE) == creature.stats[MAGIC_STAT]
 
 
-def test_apply_damage(creature):
+def test_add_effect(creature):
     """
-    apply damage should reduce the health of creatures
+    effects should be passed to effect.affect for each pre-existing effect,
+    effects with a duration greater than 0 should persists,
+    effects with a  duration of 0 should not persist,
+    effect.apply should be called at the end of add_effect
     """
-    initial_health = creature.health
-    damage = 1
-    creature.apply_damage(damage, MELEE)
-    assert creature.health == initial_health - damage
+    mocked_effect = Mock()
+    mocked_effect.affect.side_effect = lambda x: x
+    pre_existing_effects = [mocked_effect, copy.deepcopy(mocked_effect)]
+    creature.effects = pre_existing_effects
+    effect = Mock()
+    effect.duration = 0
+    creature.add_effect(effect)
+    pre_existing_effects[0].affect.assert_called_once()
+    pre_existing_effects[0].affect.assert_called_with(effect)
+    pre_existing_effects[1].affect.assert_called_once()
+    pre_existing_effects[1].affect.assert_called_with(effect)
+    effect.apply.assert_called_once()
+    assert effect not in creature.effects
+    effect.duration = 1
+    creature.add_effect(effect)
+    assert effect in creature.effects
 
 
 def test_is_alive(creature):
