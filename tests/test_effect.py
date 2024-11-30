@@ -1,4 +1,4 @@
-from dungeon.effect import Damage, MagicDamage, MagicShield, Shield
+from dungeon.effect import Effect, Damage, MagicDamage, MagicShield, Shield
 
 
 def test_damage(creature):
@@ -55,3 +55,20 @@ def test_magic_shield(creature):
     creature.health = creature.max_health
     creature.add_effect(damage)
     assert creature.health == creature.max_health - damage_amplitude + shield_amplitude
+
+
+def test_to_json_and_from_json():
+    """
+    * from json should load the correct class
+    """
+    amplitude = 2
+    effect = Damage(amplitude=amplitude)
+    data = effect.to_json()
+    effect = Effect.from_json(data)
+    assert isinstance(effect, Damage)
+    assert effect.amplitude == amplitude
+    effect = MagicShield(amplitude=amplitude)
+    data = effect.to_json()
+    effect = Effect.from_json(data)
+    assert isinstance(effect, MagicShield)
+    assert effect.amplitude == amplitude
