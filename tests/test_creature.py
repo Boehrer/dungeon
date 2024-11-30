@@ -3,7 +3,7 @@ import pytest
 from unittest.mock import Mock
 
 from dungeon.effect import Effect
-from dungeon.spells import fire_bolt
+from dungeon.spells.spells import fire_bolt
 from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
 from dungeon.weapon import Weapon
 from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE

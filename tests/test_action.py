@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from dungeon.actions import Action, MeleeAttack, RangedAttack, CastSpell
 from dungeon.creature import Creature
 from dungeon.species import get_species
-from dungeon.spells import fire_bolt
+from dungeon.spells.spells import fire_bolt
 from dungeon.weapons import MELEE, RANGED, MAGIC
 
 

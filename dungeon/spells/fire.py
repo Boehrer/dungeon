@@ -1,9 +1,9 @@
 from dungeon.creature import Creature
-from dungeon.spell import Spell
+from dungeon.spells.spell import Spell
 from dungeon.effect import Damage
 
 
-class FireSpell(Spell):
+class Fire(Spell):
     def apply(self, subject: Creature):
         damage_effect = Damage(
             amplitude=self.amplitude,
