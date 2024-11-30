@@ -3,6 +3,7 @@ import logging
 import sys
 
 from dungeon.creature import Creature
+from dungeon.effect import Damage
 from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
 
 logger = logging.getLogger(__name__)
@@ -37,10 +38,14 @@ class MeleeAttack(Action):
     damage_type = MELEE
 
     def resolve(self):
-        damage = self.actor.get_damage(damage_type=self.damage_type)
-        self.subject.apply_damage(damage, damage_type=self.damage_type)
+        amplitude = self.actor.get_damage(damage_type=self.damage_type)
+        damage_effect = Damage(
+            amplitude=amplitude,
+            duration=0,
+        )
+        self.subject.add_effect(damage_effect)
         logger.info(
-            f"{self.actor.name} attacked {self.subject.name} with {damage} "
+            f"{self.actor.name} attacked {self.subject.name} with {amplitude} "
             f"{self.damage_type} damage"
         )
 

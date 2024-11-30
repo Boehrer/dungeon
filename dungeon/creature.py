@@ -1,4 +1,5 @@
 from dungeon.buff import Buff
+from dungeon.effect import Effect
 from dungeon.spell import Spell
 from dungeon.species import Species
 from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
@@ -28,6 +29,7 @@ class Creature:
         weapon: Weapon | None = None,
         buffs: list[Buff] | None = None,
         spells: list[Spell] | None = None,
+        effects: list[Effect] | None = None,
         health: int | None = None,
         mana: int | None = None,
     ):
@@ -35,6 +37,8 @@ class Creature:
             buffs = []
         if spells is None:
             spells = []
+        if effects is None:
+            effects = []
         self.stats = species.base_stats.copy()
         for buff in buffs:
             self.stats[buff.stat] += 1
@@ -42,6 +46,7 @@ class Creature:
         self.weapon = weapon
         self.buffs = buffs
         self.spells = spells
+        self.effects = effects
         self.max_health = BASE_MAX_HEALTH + self.stats[STRENGTH]
         self.max_mana = BASE_MAX_MANA + self.stats[MAGIC_STAT]
         if health is None:
@@ -50,6 +55,7 @@ class Creature:
             mana = self.max_mana
         self.health = health
         self.mana = mana
+        
 
     def get_damage(self, damage_type: str) -> int:
         damage = self.stats[STATS_BY_DAMAGE_TYPE[damage_type]]
@@ -57,9 +63,12 @@ class Creature:
             damage += self.weapon.damage
         return damage
 
-    def apply_damage(self, damage: int, damage_type: str):
-        self.health -= damage
-        logger.info(f"{self.name} took {damage} damage")
+    def add_effect(self, effect: Effect):
+        for pre_existing_effect in self.effects:
+            effect = pre_existing_effect.affect(effect)
+        if effect.duration > 0:
+            self.effects.append(effect)
+        effect.apply(self)
 
     def is_alive(self):
         return self.health > 0
