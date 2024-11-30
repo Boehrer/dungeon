@@ -26,6 +26,7 @@ class Creature:
         name: str,
         species: Species,
         weapon: Weapon | None = None,
+        hat: Hat | None = None,
         buffs: dict[str, int] | None = None,
         spells: list[Spell] | None = None,
         effects: list[Effect] | None = None,
@@ -43,6 +44,7 @@ class Creature:
             self.stats[stat] += buff
         self.name = name
         self.weapon = weapon
+        self.hat = hat
         self.buffs = buffs
         self.spells = spells
         self.effects = effects
