@@ -3,7 +3,7 @@ from dungeon.creature import Creature
 from dungeon.species import get_species
 from dungeon.weapon import get_weapon
 from dungeon.stats import STRENGTH
-from dungeon.spells import fire_bolt
+from dungeon.spells.spells import fire_bolt
 
 
 CHAD = Creature(

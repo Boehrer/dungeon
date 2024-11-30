@@ -37,12 +37,12 @@ def process_action(action: str):
 
 
 if __name__ == "__main__":
-    game_state = GameState()
-    game_state.update_participants(PARTICIPANTS)
+    #game_state = GameState()
+    #game_state.update_participants(PARTICIPANTS)
     actions = [
         "chad melee_attack human_1",
         "chad cast_spell human_1 fire_bolt",
     ]
     for action in actions:
         process_action(action)
-    game_state.write(PARTICIPANTS)
+    #game_state.write(PARTICIPANTS)

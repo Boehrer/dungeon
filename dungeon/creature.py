@@ -66,8 +66,8 @@ class Creature:
     def add_effect(self, effect: Effect):
         for pre_existing_effect in self.effects:
             effect = pre_existing_effect.affect(effect)
-        self.effects = [e for e in self.effects if not e.pop]
-        if effect.duration > 0:
+        self.effects = [e for e in self.effects if e.persist]
+        if effect.persist:
             self.effects.append(effect)
         effect.apply(self)
 

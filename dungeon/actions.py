@@ -41,7 +41,6 @@ class MeleeAttack(Action):
         amplitude = self.actor.get_damage(damage_type=self.damage_type)
         damage_effect = Damage(
             amplitude=amplitude,
-            duration=0,
         )
         logger.info(
             f"{self.actor.name} attacked {self.subject.name} with {self.damage_type}"

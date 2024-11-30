@@ -34,8 +34,8 @@ def test_get_damage(creature):
 def test_add_effect(creature):
     """
     effects should be passed to effect.affect for each pre-existing effect,
-    effects with a duration greater than 0 should persists,
-    effects with a  duration of 0 should not persist,
+    effects with persist=True should persist,
+    effects with persist=False should not persist,
     effect.apply should be called at the end of add_effect
     """
     mocked_effect = Mock()
@@ -43,7 +43,7 @@ def test_add_effect(creature):
     pre_existing_effects = [mocked_effect, copy.deepcopy(mocked_effect)]
     creature.effects = pre_existing_effects
     effect = Mock()
-    effect.duration = 0
+    effect.persist = False
     creature.add_effect(effect)
     pre_existing_effects[0].affect.assert_called_once()
     pre_existing_effects[0].affect.assert_called_with(effect)
@@ -51,7 +51,7 @@ def test_add_effect(creature):
     pre_existing_effects[1].affect.assert_called_with(effect)
     effect.apply.assert_called_once()
     assert effect not in creature.effects
-    effect.duration = 1
+    effect.persist = True
     creature.add_effect(effect)
     assert effect in creature.effects
 
