@@ -1,4 +1,5 @@
 from dungeon.effect import Effect
+from dungeon.hat import Hat
 from dungeon.spells.spell import Spell
 from dungeon.species import Species
 from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
