@@ -39,11 +39,18 @@ class Damage(Effect):
             raise ValueError("damage amplitude must be positive")
 
 
+class MagicDamage(Damage):
+    pass
+
+
 class Shield(Effect):
     persist = True
 
+    def can_block(self, damage: Effect) -> bool:
+        return isinstance(damage, Damage)
+
     def affect(self, effect: Self) -> Self:
-        if isinstance(effect, Damage):
+        if self.can_block(effect):
             original_damage = effect.amplitude
             effect.amplitude = max(original_damage - self.amplitude, 0)
             self.amplitude -= original_damage
@@ -54,3 +61,7 @@ class Shield(Effect):
     def validate(self):
         if self.amplitude <= 0:
             raise ValueError("shield amplitude must be positive")
+
+class MagicShield(Shield):
+    def can_block(self, damage: Effect) -> bool:
+        return isinstance(damage, MagicDamage)
