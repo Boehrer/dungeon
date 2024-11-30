@@ -6,7 +6,7 @@ from dungeon.actions import ACTIONS, get_action
 from dungeon.creature import Creature
 from dungeon.game_state import GameState
 from dungeon.roll import roll
-from dungeon.species import get_species
+from dungeon.species import human
 from dungeon.spells.spells import fire_bolt, shield
 from dungeon.stats import STRENGTH
 from dungeon.weapon import get_weapon
@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 PARTICIPANTS = {
     "chad": Creature(
         name="chad",
-        species=get_species("human"),
+        species=human,
         weapon=get_weapon("common_sword"),
         buffs={STRENGTH: 1},
         spells=[
@@ -28,14 +28,13 @@ PARTICIPANTS = {
     ),
     "human_1": Creature(
         name="human_1",
-        species=get_species("human"),
+        species=human,
     ),
     "human_2": Creature(
         name="human_2",
-        species=get_species("human"),
+        species=human,
     )
 }
-
 PARSER = argparse.ArgumentParser()
 PARSER.add_argument("actor", choices=PARTICIPANTS.keys())
 PARSER.add_argument("action", choices=ACTIONS.keys())
@@ -55,12 +54,12 @@ def process_action(action: str):
 
 if __name__ == "__main__":
     game_state = GameState()
-    game_state.update_participants(PARTICIPANTS)
+    game_state.update(PARTICIPANTS)
     actions = [
         "chad melee_attack human_1",
         "chad cast_spell chad shield",
-        "human_1 melee_attack chad",
-        "human_1 melee_attack chad",
+        "human_2 melee_attack chad",
+        "human_2 melee_attack chad",
     ]
     for action in actions:
         process_action(action)

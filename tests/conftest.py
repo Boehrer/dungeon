@@ -1,12 +1,12 @@
 import pytest
 
 from dungeon.creature import Creature
-from dungeon.species import get_species
+from dungeon.species import human
 
 
 @pytest.fixture
 def creature():
     return Creature(
         name="creature",
-        species=get_species("human"),
+        species=human,
     )

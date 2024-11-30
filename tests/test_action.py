@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 from dungeon.actions import Action, MeleeAttack, RangedAttack, CastSpell
 from dungeon.creature import Creature
-from dungeon.species import get_species
+from dungeon.species import human
 from dungeon.spells.spells import fire_bolt
 from dungeon.weapons import MELEE, RANGED, MAGIC
 
@@ -12,7 +12,7 @@ from dungeon.weapons import MELEE, RANGED, MAGIC
 def other_creature():
     return Creature(
         name="other_creature",
-        species=get_species("human"),
+        species=human,
     )
     
 

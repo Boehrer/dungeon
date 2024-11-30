@@ -1,6 +1,6 @@
 from dungeon.creature import Creature
 from dungeon.game_state import GameState
-from dungeon.species import get_species
+from dungeon.species import human
 from dungeon.effect import Shield
 
 def test_write_and_update(tmp_path):
@@ -10,7 +10,7 @@ def test_write_and_update(tmp_path):
     creature = Creature(
         name="creature",
         effects=[effect],
-        species=get_species("human"),
+        species=human,
     )
     creature.health = 1
     creature.mana = 1
@@ -18,7 +18,7 @@ def test_write_and_update(tmp_path):
     game_state = GameState(path=tmp_file)
     creature = Creature(
         name="creature",
-        species=get_species("human"),
+        species=human,
     )
     participants = {"creature": creature}
     assert creature.health != 1
