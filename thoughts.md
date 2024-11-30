@@ -9,7 +9,6 @@ Species differentiate creatures via base stats
 ### stats
 * stats determine a creatures power
 * Each creature has one stat for strength, dexterity, magic, and charisma
-* stats are between 0 and 9
 
 
 ### hats
