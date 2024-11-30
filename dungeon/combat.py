@@ -3,7 +3,6 @@ import logging
 import sys
 
 from dungeon.actions import ACTIONS, get_action
-from dungeon.buff import Buff
 from dungeon.creature import Creature
 from dungeon.game_state import GameState
 from dungeon.roll import roll
