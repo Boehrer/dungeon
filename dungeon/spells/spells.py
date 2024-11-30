@@ -1,4 +1,5 @@
 from dungeon.spells.fire import Fire
+from dungeon.spells.shield import Shield
 
 
 fire_bolt = Fire(
@@ -16,3 +17,16 @@ fire_beam = Fire(
     cost=3,
     amplitude=3,
 )
+shield = Shield(
+    name="shield",
+    cost=1,
+    amplitude=1
+)
+heavy_shield = Shield(
+    name="shield",
+    cost=2,
+    amplitude=2
+)
+all_spells = [
+    fire_bolt, fire_blast, fire_beam, shield, heavy_shield
+]

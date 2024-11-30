@@ -1,12 +1,11 @@
 from dungeon.creature import Creature
-from dungeon.spell.spell import Spell
-from dungeon.effect import Shield
+from dungeon.spells.spell import Spell
+from dungeon.effect import Shield as ShieldEffect
 
 
 class Shield(Spell):
     def apply(self, subject: Creature):
-        shield_effect = Shield(
+        shield_effect = ShieldEffect(
             amplitude=self.amplitude,
-            duration=100,
         )
         subject.add_effect(shield_effect)

@@ -7,6 +7,5 @@ class Fire(Spell):
     def apply(self, subject: Creature):
         damage_effect = Damage(
             amplitude=self.amplitude,
-            duration=0,
         )
         subject.add_effect(damage_effect)

@@ -8,7 +8,6 @@ from dungeon.spells.spells import fire_bolt
 from dungeon.weapons import MELEE, RANGED, MAGIC
 
 
-
 @pytest.fixture
 def other_creature():
     return Creature(
