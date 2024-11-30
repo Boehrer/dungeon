@@ -9,3 +9,6 @@ class Fire(Spell):
             amplitude=self.amplitude,
         )
         subject.add_effect(damage_effect)
+
+    def get_difficulty(self):
+        return self.amplitude * 4

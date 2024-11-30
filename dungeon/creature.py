@@ -85,4 +85,5 @@ class Creature:
         if spell is None or spell.cost > self.mana:
             raise ValueError(f"{self.name} cannot cast {spell_name}")
         self.mana -= spell.cost
+        logger.info(f"{self.mana}/{self.max_mana} mana remaining")
         return spell

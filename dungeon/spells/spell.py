@@ -6,3 +6,6 @@ class Spell:
 
     def apply(self):
         raise NotImplementedError
+
+    def get_difficulty(self):
+        return 5

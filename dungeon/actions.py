@@ -4,12 +4,17 @@ import sys
 
 from dungeon.creature import Creature
 from dungeon.effect import Damage
+from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
 from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
 
 logger = logging.getLogger(__name__)
 
 
 class Action:
+    actor_difficulty_stat = DEXTERITY
+    subject_difficulty_stat = DEXTERITY
+
+
     def __init__(self, actor: Creature, subject: Creature, details: list[str]):
         self.actor = actor
         self.subject = subject
@@ -17,14 +22,20 @@ class Action:
         self.validate()
 
     def get_difficulty(self):
-        return 1
+        if self.actor_difficulty_stat > self.subject_difficult_stat:
+            return 5
+        elif self.actor_difficulty_stat == self.subject_difficulty_stat:
+            return 10
+        else:
+            return 15
+        
 
     def resolve(self):
         raise NotImplementedError
 
     def validate(self):
         if not self.actor.is_alive():
-            raise ValueError("The dead can't perform an action")
+            raise ValueError(f"{self.actor} is dead and can't perform an action")
 
     @classmethod
     def from_parsed_args(
@@ -36,6 +47,7 @@ class Action:
 
 
 class MeleeAttack(Action):
+    actor_difficulty_stat = STRENGTH
     damage_type = MELEE
 
     def resolve(self):
@@ -47,6 +59,13 @@ class MeleeAttack(Action):
             f"{self.actor.name} attacked {self.subject.name} with {self.damage_type}"
         )
         self.subject.add_effect(damage_effect)
+
+    def validate(self):
+        super().validate()
+        if not self.subject.is_alive():
+            raise ValueError(
+                f"{self.actor.name} attacked a dead creature ({self.subject})"
+            )
 
 
 class RangedAttack(MeleeAttack):
@@ -77,14 +96,19 @@ class CastSpell(Action):
             raise ValueError(f"Actor does not have the spell {spell_name}")
         if self.actor.mana < spell.cost:
             raise ValueError(
-                "Spell requires {spell.cost} mana, but actor only has {self.actor.mana}"
+                f"Spell requires {spell.cost} mana, but actor only has {self.actor.mana}"
             )
+
+    def get_difficulty(self):
+        spell_name = self.details[0]
+        spell = self.actor.get_spell(spell_name)
+        return spell.get_difficulty()
 
 
 ACTIONS = {
-    "melee_attack": MeleeAttack,
-    "ranged_attack": RangedAttack,
-    "cast_spell": CastSpell,
+    "melee": MeleeAttack,
+    "ranged": RangedAttack,
+    "cast": CastSpell,
 }
 
 

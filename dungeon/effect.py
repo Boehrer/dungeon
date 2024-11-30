@@ -48,7 +48,7 @@ class Damage(Effect):
 
     def apply(self, subject: "Creature"):
         subject.health -= self.amplitude
-        logger.info(f"{subject.name} took {self.amplitude} damage")
+        logger.info(f"{subject.name} took {self.amplitude} damage ({subject.health}/{subject.max_health})")
 
     def validate(self):
         if self.amplitude <= 0:
