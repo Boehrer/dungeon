@@ -90,5 +90,6 @@ def test_cast_spell(creature, other_creature):
     action = CastSpell(creature, other_creature, details=["fire_bolt"])
     fire_bolt.apply = Mock()
     action.resolve()
+    assert creature.mana == 0
     fire_bolt.apply.assert_called_once()
     fire_bolt.apply.assert_called_with(other_creature)

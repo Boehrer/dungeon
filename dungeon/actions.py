@@ -45,13 +45,13 @@ class Action:
         if not self.actor.is_alive():
             raise ValueError(f"{self.actor} is dead and can't perform an action")
 
-    @classmethod
-    def from_parsed_args(
-        cls, args: argparse.Namespace, participants: dict[str, Creature]
-    ):
-        actor = participants[args.actor]
-        subject = participants[args.subject]
-        return cls(actor=actor, subject=subject, details=args.details)
+    def attempt(self, roll: int):
+        difficulty = self.get_difficulty()
+        if roll >= difficulty:
+            logger.info(f"Passed skill check {roll}/{difficulty}")
+            self.resolve()
+        else:
+            logger.info(f"Failed skill check {roll}/{difficulty}")
 
 
 class MeleeAttack(Action):
@@ -104,7 +104,7 @@ class CastSpell(Action):
             f"{self.actor.name} cast {spell.name} on {self.subject.name} "
             f"{self.actor.mana}/{self.actor.max_mana} mana"
         )
-        self.subject.mana -= spell.cost
+        self.actor.mana -= spell.cost
         spell.apply(self.subject)
 
     def validate(self):
@@ -133,10 +133,3 @@ ACTIONS = {
     "ranged": RangedAttack,
     "cast": CastSpell,
 }
-
-
-def get_action(
-    args: argparse.Namespace, participants: dict[str, Creature]
-) -> Action:
-    cls = ACTIONS[args.action]
-    return cls.from_parsed_args(args, participants)
