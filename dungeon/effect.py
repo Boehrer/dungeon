@@ -83,6 +83,8 @@ class Shield(Effect):
 
 @register_class
 class MagicShield(Shield):
+    persist = True
+
     def can_block(self, damage: Effect) -> bool:
         return isinstance(damage, MagicDamage)
 
@@ -99,3 +101,20 @@ class Heal(Effect):
     def validate(self):
         if self.amplitude <= 0:
             raise ValueError("heal amplitude must be positive")
+
+
+@register_class
+class Renew(Effect):
+    persist = False
+
+    def apply(self, subject: "Creature"):
+        mana = min(subject.max_mana - subject.mana, self.amplitude)
+        subject.mana += mana
+        logger.info(
+            f"{subject.name} renewed {mana} mana "
+            f"({subject.mana}/{subject.max_mana})"
+        )
+
+    def validate(self):
+        if self.amplitude <= 0:
+            raise ValueError("renew amplitude must be positive")
