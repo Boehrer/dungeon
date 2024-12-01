@@ -11,6 +11,13 @@ from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
 logger = logging.getLogger(__name__)
 
 
+STATS_BY_DAMAGE_TYPE = {
+    MELEE: STRENGTH,
+    RANGED: DEXTERITY,
+    MAGIC_DAMAGE_TYPE: MAGIC_STAT,
+}
+
+
 class Action:
     actor_difficulty_stat = DEXTERITY
     subject_difficulty_stat = DEXTERITY
@@ -52,12 +59,13 @@ class MeleeAttack(Action):
     damage_type = MELEE
 
     def resolve(self):
-        amplitude = self.actor.get_damage(damage_type=self.damage_type)
+        amplitude = self.get_damage()
         damage_effect = Damage(
             amplitude=amplitude,
         )
         logger.info(
-            f"{self.actor.name} attacked {self.subject.name} with {self.damage_type}"
+            f"{self.actor.name} attacked {self.subject.name} with "
+            f"{self.damage_type}"
         )
         self.subject.add_effect(damage_effect)
 
@@ -67,6 +75,15 @@ class MeleeAttack(Action):
             raise ValueError(
                 f"{self.actor.name} attacked a dead creature ({self.subject})"
             )
+
+    def get_damage(self) -> int:
+        damage = self.actor.stats[STATS_BY_DAMAGE_TYPE[self.damage_type]]
+        if (
+            self.actor.weapon is not None
+            and self.actor.weapon.damage_type == self.damage_type
+        ):
+            damage += self.actor.weapon.damage
+        return damage
 
 
 class RangedAttack(MeleeAttack):

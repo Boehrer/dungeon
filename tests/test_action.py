@@ -7,6 +7,7 @@ from dungeon.species import human
 from dungeon.spells.spells import fire_bolt
 from dungeon.weapon import Weapon
 from dungeon.weapons import MELEE, RANGED, MAGIC
+from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
 
 
 @pytest.fixture
@@ -43,7 +44,11 @@ def test_melee_attack(creature, other_creature):
     action = MeleeAttack(creature, other_creature, [])
     initial_health = other_creature.health
     action.resolve()
-    assert initial_health - creature.get_damage(MELEE) == other_creature.health
+    assert initial_health - action.get_damage() == other_creature.health
+    creature.weapon = Weapon("", 1, MELEE)
+    assert (
+        action.get_damage() == creature.stats[STRENGTH] + creature.weapon.damage
+    )
 
 
 def test_ranged_attack(creature, other_creature):
@@ -56,10 +61,15 @@ def test_ranged_attack(creature, other_creature):
         action = RangedAttack(creature, other_creature, [])
     creature.weapon = Weapon("", 0, RANGED)
     action = RangedAttack(creature, other_creature, [])
+    assert action.get_damage() == creature.stats[DEXTERITY]
     initial_health = other_creature.health
     action.resolve()
     assert (
-        initial_health - creature.get_damage(RANGED) == other_creature.health
+        initial_health - action.get_damage() == other_creature.health
+    )
+    creature.weapon.damage = 1
+    assert (
+        action.get_damage() == creature.stats[DEXTERITY] + creature.weapon.damage
     )
 
 

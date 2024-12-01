@@ -22,26 +22,6 @@ def test_stats():
         assert creature.stats[stat] == human.base_stats[stat] + buffs[stat]
 
 
-def test_get_damage(creature):
-    """
-    melee damage should scale with strength,
-    ranged damage should scale with dexterity,
-    magic damage should scale with magic,
-    weapons should increase a creature's
-    damage of the weapon's damage type.
-    """
-    assert creature.get_damage(MELEE) == creature.stats[STRENGTH]
-    assert creature.get_damage(RANGED) == creature.stats[DEXTERITY]
-    assert creature.get_damage(MAGIC_DAMAGE_TYPE) == creature.stats[MAGIC_STAT]
-    weapon = Weapon(name="melee_weapon", damage=1, damage_type=MELEE)
-    creature.weapon = weapon
-    assert (
-        creature.get_damage(MELEE) == creature.stats[STRENGTH] + weapon.damage
-    )
-    assert creature.get_damage(RANGED) == creature.stats[DEXTERITY]
-    assert creature.get_damage(MAGIC_DAMAGE_TYPE) == creature.stats[MAGIC_STAT]
-
-
 def test_add_effect(creature):
     """
     effects should be passed to effect.affect for each pre-existing effect,

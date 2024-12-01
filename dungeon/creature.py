@@ -16,11 +16,6 @@ logger = logging.getLogger(__name__)
 
 BASE_MAX_HEALTH = 3
 BASE_MAX_MANA = 2
-STATS_BY_DAMAGE_TYPE = {
-    MELEE: STRENGTH,
-    RANGED: DEXTERITY,
-    MAGIC_DAMAGE_TYPE: MAGIC_STAT,
-}
 
 
 class Creature:
@@ -59,12 +54,6 @@ class Creature:
             mana = self.max_mana
         self.health = health
         self.mana = mana
-
-    def get_damage(self, damage_type: str) -> int:
-        damage = self.stats[STATS_BY_DAMAGE_TYPE[damage_type]]
-        if self.weapon is not None and self.weapon.damage_type == damage_type:
-            damage += self.weapon.damage
-        return damage
 
     def add_effect(self, effect: Effect):
         for pre_existing_effect in self.effects:
