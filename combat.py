@@ -15,66 +15,57 @@ from dungeon.weapon import get_weapon
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
-PARTICIPANTS = {
-    "chad": Creature(
+PARTY = [
+    Creature(
         name="chad",
         species=human,
         weapon=get_weapon("common_sword"),
-        buffs={STRENGTH: 1},
-        spells=[],
     ),
-    "sam": Creature(
+    Creature(
         name="sam",
         species=halfling,
-        weapon=get_weapon("common_bow"),
-        buffs={DEXTERITY: 1},
-        spells=[],
+        weapon=get_weapon("common_sword"),
     ),
-    "ren": Creature(
+    Creature(
         name="ren",
         species=elf,
-        weapon=get_weapon("common_staff"),
-        buffs={MAGIC: 1},
-        spells=[fire_bolt, shield],
-    ),
-    "gog": Creature(
-        name="gog",
         weapon=get_weapon("common_sword"),
-        species=goblin,
+        spells=[fire_bolt]
     ),
-    "rog": Creature(
-        name="rog",
-        weapon=get_weapon("common_sword"),
-        species=goblin,
-    ),
-}
+]
+from dungeon.places.entry_room import NPCS
+
+PARTICIPANTS = {creature.name: creature for creature in PARTY + NPCS}
+
 PARSER = argparse.ArgumentParser()
 PARSER.add_argument("actor", choices=PARTICIPANTS.keys())
 PARSER.add_argument("action", choices=ACTIONS.keys())
 PARSER.add_argument("subject", choices=PARTICIPANTS.keys())
 PARSER.add_argument("details", nargs="*")
+PARSER.add_argument("--roll", type=int)
 
 
 def process_action(action: str):
-    action = get_action(PARSER.parse_args(action.split()), PARTICIPANTS)
-    skill_check = roll()
-    if skill_check >= action.get_difficulty():
-        logger.info("passed skill check")
+    args = PARSER.parse_args(action.split())
+    action = get_action(args, PARTICIPANTS)
+    if args.roll is None:
+        skill_check = roll()
+    else:
+        skill_check = args.roll
+    difficulty = action.get_difficulty()
+    if skill_check >= difficulty:
+        logger.info(f"Passed skill check {skill_check}/{difficulty}")
         action.resolve()
     else:
-        logger.info("failed skill check")
+        logger.info(f"Failed skill check {skill_check}/{difficulty}")
 
 
 if __name__ == "__main__":
     game_state = GameState()
     game_state.update(PARTICIPANTS)
     actions = [
-        "chad melee_attack gog",
-        "ren cast_spell chad shield",
-        "sam ranged_attack gog",
-        "gog melee_attack chad",
-        "rog melee_attack chad"
+        "ren cast goblin_1 fire_bolt other --roll 20",
     ]
     for action in actions:
         process_action(action)
-    game_state.write(PARTICIPANTS)
+        game_state.write(PARTICIPANTS)

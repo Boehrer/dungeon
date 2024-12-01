@@ -4,7 +4,6 @@ from dungeon.creature import Creature
 
 class Potion:
     def __init__(self, effect: Effect):
-        if effect.
         self.effect = effect
 
 

@@ -22,7 +22,7 @@ class Action:
         self.validate()
 
     def get_difficulty(self):
-        if self.actor_difficulty_stat > self.subject_difficult_stat:
+        if self.actor_difficulty_stat > self.subject_difficulty_stat:
             return 5
         elif self.actor_difficulty_stat == self.subject_difficulty_stat:
             return 10

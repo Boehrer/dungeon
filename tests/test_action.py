@@ -19,10 +19,10 @@ def other_creature():
 
 def test_get_difficulty(creature, other_creature):
     """
-    difficulty should default to 1
+    difficulty should default to 10
     """
     action = Action(actor=creature, subject=other_creature, details=[])
-    assert action.get_difficulty() == 1
+    assert action.get_difficulty() == 10
 
 
 def test_validate(creature, other_creature):
