@@ -1,3 +1,6 @@
+import copy
+import logging
+
 from dungeon.effect import Effect
 from dungeon.hat import Hat
 from dungeon.spells.spell import Spell
@@ -6,7 +9,6 @@ from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
 from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
 from dungeon.weapon import Weapon
 
-import logging
 
 
 logger = logging.getLogger(__name__)
@@ -74,16 +76,3 @@ class Creature:
 
     def is_alive(self):
         return self.health > 0
-
-    def get_spell(self, name: str) -> Spell | None:
-        spells = [s for s in self.spells if s.name == name]
-        if len(spells) > 0:
-            return spells[0]
-
-    def cast(self, spell_name: str) -> Spell:
-        spell = self.get_spell(spell_name)
-        if spell is None or spell.cost > self.mana:
-            raise ValueError(f"{self.name} cannot cast {spell_name}")
-        self.mana -= spell.cost
-        logger.info(f"{self.mana}/{self.max_mana} mana remaining")
-        return spell

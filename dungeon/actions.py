@@ -4,6 +4,7 @@ import sys
 
 from dungeon.creature import Creature
 from dungeon.effect import Damage
+from dungeon.spells.spell import Spell
 from dungeon.stats import STRENGTH, DEXTERITY, MAGIC as MAGIC_STAT
 from dungeon.weapons import MELEE, RANGED, MAGIC as MAGIC_DAMAGE_TYPE
 
@@ -81,18 +82,19 @@ class RangedAttack(MeleeAttack):
 
 class CastSpell(Action):
     def resolve(self):
-        spell_name = self.details[0]
-        spell = self.actor.cast(spell_name)
+        spell = self.get_spell()
         logger.info(
-            f"{self.actor.name} cast {spell_name} on {self.subject.name}"
+            f"{self.actor.name} cast {spell.name} on {self.subject.name} "
+            f"{self.actor.mana}/{self.actor.max_mana} mana"
         )
+        self.subject.mana -= spell.cost
         spell.apply(self.subject)
 
     def validate(self):
         super().validate()
-        spell_name = self.details[0]
-        spell = self.actor.get_spell(spell_name)
+        spell = self.get_spell()
         if spell is None:
+            spell_name = self.details[0]
             raise ValueError(f"Actor does not have the spell {spell_name}")
         if self.actor.mana < spell.cost:
             raise ValueError(
@@ -100,9 +102,13 @@ class CastSpell(Action):
             )
 
     def get_difficulty(self):
+        return self.get_spell().get_difficulty()
+
+    def get_spell(self) -> Spell | None:
         spell_name = self.details[0]
-        spell = self.actor.get_spell(spell_name)
-        return spell.get_difficulty()
+        spells = [s for s in self.actor.spells if s.name == spell_name]
+        if len(spells) > 0:
+            return spells[0]
 
 
 ACTIONS = {

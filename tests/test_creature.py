@@ -77,33 +77,3 @@ def test_is_alive(creature):
     assert not creature.is_alive()
     creature.health = -1
     assert not creature.is_alive()
-
-
-def test_get_spells(creature):
-    """
-    get spells should return None if the creature does not have the
-    specified spell. It should return the specified spell if it has
-    it.
-    """
-    assert creature.get_spell("fire_bolt") is None
-    creature.spells = [fire_bolt]
-    assert creature.get_spell("fire_bolt") == fire_bolt
-
-
-def test_cast(creature):
-    """
-    casting a spell should fail if the creature does not have the spell,
-    casting a spell should fail if the spells cost exceeds the creature's mana,
-    casting a spell should reduce the creatures mana, the spell which was cast
-    should be returned.
-    """
-    with pytest.raises(ValueError):
-        creature.cast("fire_bolt")
-    creature.spells = [fire_bolt]
-    creature.mana = 0
-    with pytest.raises(ValueError):
-        creature.cast("fire_bolt")
-    creature.mana = 1
-    spell = creature.cast("fire_bolt")
-    assert spell == fire_bolt
-    assert creature.mana == 0
